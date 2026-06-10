@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preseason Top 25 — AllCBB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f9f8f6;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  nav {
+    border-bottom: 1px solid #e8e6e1;
+    background: #f9f8f6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-decoration: none;
+    letter-spacing: -0.2px;
+  }
+  .nav-logo .dot { color: #aaa; font-weight: 400; }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover,
+  .nav-links a.active { color: #1a1a1a; }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e8e6e1;
+  }
+  .page-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .page-meta {
+    font-size: 13px;
+    color: #aaa;
+  }
+
+  .rankings-list {
+    list-style: none;
+  }
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0ede8;
+    transition: background 0.1s;
+  }
+  .ranking-item:last-child { border-bottom: none; }
+  .rank-num {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ccc;
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .rank-num.top5 { color: #1a1a1a; }
+  .rank-info { flex: 1; }
+  .rank-team {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: -0.2px;
+  }
+  .rank-conf {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+  .rank-note {
+    font-size: 12px;
+    color: #aaa;
+    font-style: italic;
+    max-width: 200px;
+    text-align: right;
+  }
+
+  .disclaimer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e8e6e1;
+    font-size: 12px;
+    color: #bbb;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 2rem 1rem; }
+    .rank-note { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">AllCBB<span class="dot">.com</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pointbattle.html">Games</a></li>
+      <li><a href="top25.html" class="active">Lists</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="page-eyebrow">List · Updated June 2025</div>
+    <h1>Preseason Top 25</h1>
+    <p class="page-meta">My personal picks heading into 2025–26. No algorithm, no committee.</p>
+  </div>
+
+  <ol class="rankings-list">
+    <!-- TO EDIT: Change the team name, conference, and note for each ranking.
+         To reorder, just move the whole <li> block up or down.
+         The rank numbers are automatic. -->
+    <li class="ranking-item">
+      <span class="rank-num top5">1</span>
+      <div class="rank-info">
+        <div class="rank-team">Duke</div>
+        <div class="rank-conf">ACC</div>
+      </div>
+      <div class="rank-note">Cooper Flagg era begins</div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num top5">2</span>
+      <div class="rank-info">
+        <div class="rank-team">Kansas</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note">Always dangerous in October</div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num top5">3</span>
+      <div class="rank-info">
+        <div class="rank-team">Kentucky</div>
+        <div class="rank-conf">SEC</div>
+      </div>
+      <div class="rank-note">Reloaded roster</div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num top5">4</span>
+      <div class="rank-info">
+        <div class="rank-team">Auburn</div>
+        <div class="rank-conf">SEC</div>
+      </div>
+      <div class="rank-note">Returning core intact</div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num top5">5</span>
+      <div class="rank-info">
+        <div class="rank-team">Houston</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note">Kelvin Sampson machine</div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">6</span>
+      <div class="rank-info">
+        <div class="rank-team">Tennessee</div>
+        <div class="rank-conf">SEC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">7</span>
+      <div class="rank-info">
+        <div class="rank-team">Gonzaga</div>
+        <div class="rank-conf">WCC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">8</span>
+      <div class="rank-info">
+        <div class="rank-team">UConn</div>
+        <div class="rank-conf">Big East</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">9</span>
+      <div class="rank-info">
+        <div class="rank-team">Baylor</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">10</span>
+      <div class="rank-info">
+        <div class="rank-team">Michigan State</div>
+        <div class="rank-conf">Big Ten</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">11</span>
+      <div class="rank-info">
+        <div class="rank-team">Alabama</div>
+        <div class="rank-conf">SEC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">12</span>
+      <div class="rank-info">
+        <div class="rank-team">Iowa State</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">13</span>
+      <div class="rank-info">
+        <div class="rank-team">Marquette</div>
+        <div class="rank-conf">Big East</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">14</span>
+      <div class="rank-info">
+        <div class="rank-team">Indiana</div>
+        <div class="rank-conf">Big Ten</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">15</span>
+      <div class="rank-info">
+        <div class="rank-team">Creighton</div>
+        <div class="rank-conf">Big East</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">16</span>
+      <div class="rank-info">
+        <div class="rank-team">North Carolina</div>
+        <div class="rank-conf">ACC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">17</span>
+      <div class="rank-info">
+        <div class="rank-team">Purdue</div>
+        <div class="rank-conf">Big Ten</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">18</span>
+      <div class="rank-info">
+        <div class="rank-team">Arizona</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">19</span>
+      <div class="rank-info">
+        <div class="rank-team">Illinois</div>
+        <div class="rank-conf">Big Ten</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">20</span>
+      <div class="rank-info">
+        <div class="rank-team">St. John's</div>
+        <div class="rank-conf">Big East</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">21</span>
+      <div class="rank-info">
+        <div class="rank-team">Florida</div>
+        <div class="rank-conf">SEC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">22</span>
+      <div class="rank-info">
+        <div class="rank-team">Wisconsin</div>
+        <div class="rank-conf">Big Ten</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">23</span>
+      <div class="rank-info">
+        <div class="rank-team">Texas Tech</div>
+        <div class="rank-conf">Big 12</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">24</span>
+      <div class="rank-info">
+        <div class="rank-team">Villanova</div>
+        <div class="rank-conf">Big East</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+    <li class="ranking-item">
+      <span class="rank-num">25</span>
+      <div class="rank-info">
+        <div class="rank-team">Memphis</div>
+        <div class="rank-conf">AAC</div>
+      </div>
+      <div class="rank-note"></div>
+    </li>
+  </ol>
+
+  <p class="disclaimer">These are my personal preseason picks and will be updated as the season approaches. Last updated June 2025.</p>
+
+</div>
+
+</body>
+</html>
