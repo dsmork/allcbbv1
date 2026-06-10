@@ -319,7 +319,7 @@ const players = [
   { name: "Nick Smith Jr.", school: "Arkansas", pos: "G", season: "2022–23", ppg: 12.5 },
 ].filter(p => p.ppg !== null);
 
-let streak = 0, best = 0, playerA, playerB, answered = false, usedIndices = [];
+let streak = 0, best = parseInt(localStorage.getItem("pb_best") || "0"), playerA, playerB, answered = false, usedIndices = [];
 
 function pickTwo() {
   if (usedIndices.length > players.length - 2) usedIndices = [];
@@ -364,9 +364,9 @@ function guess(side) {
   if (correct) {
     document.getElementById('card-' + side).classList.add('correct');
     streak++;
-    if (streak > best) best = streak;
+    if (streak > best) { best = streak; localStorage.setItem("pb_best", best); }
     document.getElementById('streak').textContent = streak;
-    document.getElementById('best').textContent = best;
+    document.getElementById("best").textContent = best;
     const msg = document.getElementById('result-msg');
     msg.textContent = '✓ Correct! ' + (side === 'a' ? playerA.name : playerB.name) + ' had the higher PPG.';
     msg.className = 'result-msg correct';
@@ -388,19 +388,20 @@ function nextRound() { renderRound(); }
 function showGameOver() {
   document.getElementById('game-area').style.display = 'none';
   document.getElementById('game-over-area').style.display = 'block';
-  document.getElementById('final-streak').textContent = best;
+  document.getElementById('final-streak').textContent = streak > best ? streak : best;
   document.getElementById('final-best').textContent = best;
 }
 
 function restartGame() {
-  streak = 0; best = 0; usedIndices = [];
+  streak = 0; usedIndices = [];
   document.getElementById('streak').textContent = 0;
-  document.getElementById('best').textContent = 0;
+  document.getElementById('best').textContent = best;
   document.getElementById('game-area').style.display = 'block';
   document.getElementById('game-over-area').style.display = 'none';
   renderRound();
 }
 
+document.getElementById("best").textContent = best;
 renderRound();
 </script>
 </body>
