@@ -9,137 +9,67 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f9f8f6; color: #1a1a1a; min-height: 100vh; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #f9f8f6;
-    color: #1a1a1a;
-    min-height: 100vh;
-  }
-
-  nav {
-    border-bottom: 1px solid #e8e6e1;
-    background: #f9f8f6;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .nav-inner {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav-logo {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1a1a1a;
-    text-decoration: none;
-    letter-spacing: -0.2px;
-  }
+  nav { border-bottom: 1px solid #e8e6e1; background: #f9f8f6; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: #1a1a1a; text-decoration: none; letter-spacing: -0.2px; }
   .nav-logo .dot { color: #aaa; font-weight: 400; }
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 13px;
-    font-weight: 500;
-    color: #888;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .nav-links a:hover,
-  .nav-links a.active { color: #1a1a1a; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: #888; text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover, .nav-links a.active { color: #1a1a1a; }
 
-  .page {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
-  }
+  .page { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .page-header { margin-bottom: 1.75rem; }
+  .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+  .page-header h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 4px; }
+  .page-meta { font-size: 13px; color: #aaa; }
 
-  .page-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #e8e6e1;
+  .rankings-table { width: 100%; border-collapse: collapse; }
+  .rankings-table thead tr { border-bottom: 2px solid #e8e6e1; }
+  .rankings-table thead th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #aaa;
+    padding: 0 10px 10px 10px; text-align: left; white-space: nowrap;
   }
-  .page-eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: #aaa;
-    margin-bottom: 10px;
-  }
-  .page-header h1 {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-  }
-  .page-meta {
-    font-size: 13px;
-    color: #aaa;
-  }
+  .rankings-table thead th.center { text-align: center; }
 
-  .rankings-list {
-    list-style: none;
-  }
-  .ranking-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 14px 0;
-    border-bottom: 1px solid #f0ede8;
-    transition: background 0.1s;
-  }
-  .ranking-item:last-child { border-bottom: none; }
-  .rank-num {
-    font-size: 13px;
-    font-weight: 600;
-    color: #ccc;
-    width: 24px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-  .rank-num.top5 { color: #1a1a1a; }
-  .rank-info { flex: 1; }
-  .rank-team {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a1a;
-    letter-spacing: -0.2px;
-  }
-  .rank-conf {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 2px;
-  }
-  .rank-note {
-    font-size: 12px;
-    color: #aaa;
-    font-style: italic;
-    max-width: 200px;
-    text-align: right;
-  }
+  /* ALTERNATING ROWS */
+  .rankings-table tbody tr:nth-child(odd)  { background: #ffffff; }
+  .rankings-table tbody tr:nth-child(even) { background: #f7f6f4; }
+  .rankings-table tbody tr:hover { background: #eceae5; }
+  .rankings-table tbody tr:last-child { border-bottom: none; }
+  .rankings-table tbody td { padding: 10px 10px; font-size: 14px; vertical-align: middle; }
 
-  .disclaimer {
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e8e6e1;
-    font-size: 12px;
-    color: #bbb;
-    line-height: 1.6;
-  }
+  .td-rank { font-size: 13px; font-weight: 600; color: #ccc; width: 28px; text-align: right; padding-right: 12px !important; }
+  .td-rank.top5 { color: #1a1a1a; }
 
-  @media (max-width: 600px) {
-    .page { padding: 2rem 1rem; }
-    .rank-note { display: none; }
+  .td-dot { width: 20px; padding-left: 0 !important; padding-right: 6px !important; }
+  .color-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+  .td-team { min-width: 150px; }
+  .team-row { display: flex; align-items: baseline; gap: 7px; }
+  .team-name { font-size: 15px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.2px; white-space: nowrap; }
+  .team-record { font-size: 12px; color: #aaa; font-weight: 400; white-space: nowrap; }
+  .team-nick { font-size: 11px; color: #bbb; margin-top: 1px; }
+
+  .conf-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; color: #888; background: #e8e6e1; border-radius: 4px; padding: 2px 7px; white-space: nowrap; }
+
+  /* TREND */
+  .td-trend { text-align: center; width: 64px; }
+  .trend {
+    display: inline-flex; align-items: center; justify-content: center; gap: 2px;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; white-space: nowrap; min-width: 36px;
   }
+  .trend.up   { color: #1D9E75; background: #d8f3e8; }
+  .trend.down { color: #E24B4A; background: #fde8e8; }
+  .trend.same { color: #bbb; }
+  .trend.new  { color: #1D9E75; background: #d8f3e8; font-size: 9px; }
+
+  .disclaimer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e8e6e1; font-size: 12px; color: #bbb; line-height: 1.6; }
+
+  @media (max-width: 520px) { .page { padding: 1.5rem 1rem; } }
 </style>
 </head>
 <body>
@@ -156,222 +86,90 @@
 </nav>
 
 <div class="page">
-
   <div class="page-header">
-    <div class="page-eyebrow">List · Updated June 2025</div>
+    <div class="page-eyebrow">Updated June 2025</div>
     <h1>Preseason Top 25</h1>
     <p class="page-meta">My personal picks heading into 2025–26. No algorithm, no committee.</p>
   </div>
 
-  <ol class="rankings-list">
-    <!-- TO EDIT: Change the team name, conference, and note for each ranking.
-         To reorder, just move the whole <li> block up or down.
-         The rank numbers are automatic. -->
-    <li class="ranking-item">
-      <span class="rank-num top5">1</span>
-      <div class="rank-info">
-        <div class="rank-team">Duke</div>
-        <div class="rank-conf">ACC</div>
-      </div>
-      <div class="rank-note">Cooper Flagg era begins</div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num top5">2</span>
-      <div class="rank-info">
-        <div class="rank-team">Kansas</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note">Always dangerous in October</div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num top5">3</span>
-      <div class="rank-info">
-        <div class="rank-team">Kentucky</div>
-        <div class="rank-conf">SEC</div>
-      </div>
-      <div class="rank-note">Reloaded roster</div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num top5">4</span>
-      <div class="rank-info">
-        <div class="rank-team">Auburn</div>
-        <div class="rank-conf">SEC</div>
-      </div>
-      <div class="rank-note">Returning core intact</div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num top5">5</span>
-      <div class="rank-info">
-        <div class="rank-team">Houston</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note">Kelvin Sampson machine</div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">6</span>
-      <div class="rank-info">
-        <div class="rank-team">Tennessee</div>
-        <div class="rank-conf">SEC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">7</span>
-      <div class="rank-info">
-        <div class="rank-team">Gonzaga</div>
-        <div class="rank-conf">WCC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">8</span>
-      <div class="rank-info">
-        <div class="rank-team">UConn</div>
-        <div class="rank-conf">Big East</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">9</span>
-      <div class="rank-info">
-        <div class="rank-team">Baylor</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">10</span>
-      <div class="rank-info">
-        <div class="rank-team">Michigan State</div>
-        <div class="rank-conf">Big Ten</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">11</span>
-      <div class="rank-info">
-        <div class="rank-team">Alabama</div>
-        <div class="rank-conf">SEC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">12</span>
-      <div class="rank-info">
-        <div class="rank-team">Iowa State</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">13</span>
-      <div class="rank-info">
-        <div class="rank-team">Marquette</div>
-        <div class="rank-conf">Big East</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">14</span>
-      <div class="rank-info">
-        <div class="rank-team">Indiana</div>
-        <div class="rank-conf">Big Ten</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">15</span>
-      <div class="rank-info">
-        <div class="rank-team">Creighton</div>
-        <div class="rank-conf">Big East</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">16</span>
-      <div class="rank-info">
-        <div class="rank-team">North Carolina</div>
-        <div class="rank-conf">ACC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">17</span>
-      <div class="rank-info">
-        <div class="rank-team">Purdue</div>
-        <div class="rank-conf">Big Ten</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">18</span>
-      <div class="rank-info">
-        <div class="rank-team">Arizona</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">19</span>
-      <div class="rank-info">
-        <div class="rank-team">Illinois</div>
-        <div class="rank-conf">Big Ten</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">20</span>
-      <div class="rank-info">
-        <div class="rank-team">St. John's</div>
-        <div class="rank-conf">Big East</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">21</span>
-      <div class="rank-info">
-        <div class="rank-team">Florida</div>
-        <div class="rank-conf">SEC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">22</span>
-      <div class="rank-info">
-        <div class="rank-team">Wisconsin</div>
-        <div class="rank-conf">Big Ten</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">23</span>
-      <div class="rank-info">
-        <div class="rank-team">Texas Tech</div>
-        <div class="rank-conf">Big 12</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">24</span>
-      <div class="rank-info">
-        <div class="rank-team">Villanova</div>
-        <div class="rank-conf">Big East</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-    <li class="ranking-item">
-      <span class="rank-num">25</span>
-      <div class="rank-info">
-        <div class="rank-team">Memphis</div>
-        <div class="rank-conf">AAC</div>
-      </div>
-      <div class="rank-note"></div>
-    </li>
-  </ol>
+  <table class="rankings-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Team</th>
+        <th>Conf</th>
+        <th class="center">Trend</th>
+      </tr>
+    </thead>
+    <tbody id="rankings-body"></tbody>
+  </table>
 
-  <p class="disclaimer">These are my personal preseason picks and will be updated as the season approaches. Last updated June 2025.</p>
-
+  <p class="disclaimer">Personal picks only. Updated manually as the season approaches. Last updated June 2025.</p>
 </div>
 
+<script>
+// ── EDIT YOUR RANKINGS HERE ──────────────────────────────────────────────────
+// trend: a number like 3, -2, 0, or the string "new"
+//   3    → shows ▲3  (green)
+//  -2    → shows ▼2  (red)
+//   0    → shows  —  (grey)
+//  "new" → shows NEW (green)
+const rankings = [
+  { name: "Duke",           nick: "Blue Devils",   conf: "ACC",      color: "#003087", record: "0-0", trend: 0     },
+  { name: "Kansas",         nick: "Jayhawks",      conf: "Big 12",   color: "#0051A5", record: "0-0", trend: 2     },
+  { name: "Kentucky",       nick: "Wildcats",      conf: "SEC",      color: "#0033A0", record: "0-0", trend: 4     },
+  { name: "Auburn",         nick: "Tigers",        conf: "SEC",      color: "#E87722", record: "0-0", trend: 0     },
+  { name: "Houston",        nick: "Cougars",       conf: "Big 12",   color: "#C8102E", record: "0-0", trend: -1    },
+  { name: "Tennessee",      nick: "Volunteers",    conf: "SEC",      color: "#FF8200", record: "0-0", trend: 3     },
+  { name: "Gonzaga",        nick: "Bulldogs",      conf: "WCC",      color: "#002469", record: "0-0", trend: 0     },
+  { name: "UConn",          nick: "Huskies",       conf: "Big East", color: "#000E2F", record: "0-0", trend: -3    },
+  { name: "Baylor",         nick: "Bears",         conf: "Big 12",   color: "#003015", record: "0-0", trend: 0     },
+  { name: "Michigan State", nick: "Spartans",      conf: "Big Ten",  color: "#18453B", record: "0-0", trend: 1     },
+  { name: "Alabama",        nick: "Crimson Tide",  conf: "SEC",      color: "#9E1B32", record: "0-0", trend: 0     },
+  { name: "Iowa State",     nick: "Cyclones",      conf: "Big 12",   color: "#C8102E", record: "0-0", trend: 2     },
+  { name: "Marquette",      nick: "Golden Eagles", conf: "Big East", color: "#003366", record: "0-0", trend: 0     },
+  { name: "Indiana",        nick: "Hoosiers",      conf: "Big Ten",  color: "#990000", record: "0-0", trend: "new" },
+  { name: "Creighton",      nick: "Bluejays",      conf: "Big East", color: "#005CA9", record: "0-0", trend: 0     },
+  { name: "North Carolina", nick: "Tar Heels",     conf: "ACC",      color: "#4B9CD3", record: "0-0", trend: 5     },
+  { name: "Purdue",         nick: "Boilermakers",  conf: "Big Ten",  color: "#CEB888", record: "0-0", trend: -2    },
+  { name: "Arizona",        nick: "Wildcats",      conf: "Big 12",   color: "#003366", record: "0-0", trend: 0     },
+  { name: "Illinois",       nick: "Illini",        conf: "Big Ten",  color: "#E84A27", record: "0-0", trend: 1     },
+  { name: "St. John's",     nick: "Red Storm",     conf: "Big East", color: "#C8102E", record: "0-0", trend: "new" },
+  { name: "Florida",        nick: "Gators",        conf: "SEC",      color: "#0021A5", record: "0-0", trend: 3     },
+  { name: "Wisconsin",      nick: "Badgers",       conf: "Big Ten",  color: "#C5050C", record: "0-0", trend: 0     },
+  { name: "Texas Tech",     nick: "Red Raiders",   conf: "Big 12",   color: "#CC0000", record: "0-0", trend: -4    },
+  { name: "Villanova",      nick: "Wildcats",      conf: "Big East", color: "#003189", record: "0-0", trend: 0     },
+  { name: "Memphis",        nick: "Tigers",        conf: "AAC",      color: "#003087", record: "0-0", trend: "new" },
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderTrend(trend) {
+  if (trend === "new") return `<span class="trend new">NEW</span>`;
+  if (trend > 0)       return `<span class="trend up">▲ ${trend}</span>`;
+  if (trend < 0)       return `<span class="trend down">▼ ${Math.abs(trend)}</span>`;
+  return                      `<span class="trend same">—</span>`;
+}
+
+const tbody = document.getElementById('rankings-body');
+rankings.forEach((team, i) => {
+  const rank = i + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="td-rank ${rank <= 5 ? 'top5' : ''}">${rank}</td>
+    <td class="td-dot"><span class="color-dot" style="background:${team.color}"></span></td>
+    <td class="td-team">
+      <div class="team-row">
+        <span class="team-name">${team.name}</span>
+        <span class="team-record">${team.record}</span>
+      </div>
+      <div class="team-nick">${team.nick}</div>
+    </td>
+    <td><span class="conf-badge">${team.conf}</span></td>
+    <td class="td-trend">${renderTrend(team.trend)}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
 </body>
 </html>
