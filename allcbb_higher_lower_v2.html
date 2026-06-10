@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Higher or Lower — AllCBB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f9f8f6;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  #game {
+    width: 100%;
+    max-width: 600px;
+  }
+  .header { text-align: center; margin-bottom: 1.5rem; }
+  .site-label { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+  .header h1 { font-size: 28px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.5px; }
+  .header p { font-size: 14px; color: #888; margin-top: 6px; }
+  .streak-bar { display: flex; justify-content: center; gap: 16px; margin-bottom: 1.5rem; }
+  .stat-pill { background: #fff; border: 1px solid #e8e6e1; border-radius: 999px; padding: 6px 18px; font-size: 13px; color: #888; }
+  .stat-pill span { font-weight: 600; color: #1a1a1a; margin-left: 4px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e8e6e1;
+    border-radius: 16px;
+    padding: 1.5rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+    text-align: center;
+  }
+  .card:hover { border-color: #bbb; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .card.correct { border: 2px solid #1D9E75; background: #f0faf6; }
+  .card.wrong { border: 2px solid #E24B4A; background: #fef2f2; }
+  .card.disabled { pointer-events: none; }
+  .school-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #888;
+    background: #f5f4f1;
+    border: 1px solid #e8e6e1;
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+  }
+  .position-badge { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+  .player-name { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; line-height: 1.2; }
+  .player-years { font-size: 12px; color: #aaa; margin-bottom: 16px; }
+  .ppg-label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .ppg-reveal { font-size: 36px; font-weight: 600; color: #1a1a1a; }
+  .ppg-hidden { font-size: 36px; font-weight: 600; color: #ddd; }
+  .result-msg {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .result-msg.correct { color: #085041; background: #e1f5ee; }
+  .result-msg.wrong { color: #7f1d1d; background: #fef2f2; }
+  .result-msg.empty { background: transparent; }
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background: #1a1a1a;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .next-btn:hover { background: #333; }
+  .next-btn:disabled { background: #e8e6e1; color: #aaa; pointer-events: none; }
+  .game-over { text-align: center; padding: 3rem 1rem; }
+  .game-over h2 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+  .game-over p { color: #888; margin-bottom: 1.5rem; font-size: 15px; }
+  .restart-btn {
+    padding: 12px 32px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .restart-btn:hover { background: #333; }
+  @media (max-width: 480px) {
+    .cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .player-name { font-size: 14px; }
+    .ppg-reveal, .ppg-hidden { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div id="game">
+  <div class="header">
+    <div class="site-label">AllCBB.com</div>
+    <h1>Higher or Lower</h1>
+    <p>Who had the higher points per game in their best college season?</p>
+  </div>
+
+  <div class="streak-bar">
+    <div class="stat-pill">Streak <span id="streak">0</span></div>
+    <div class="stat-pill">Best <span id="best">0</span></div>
+  </div>
+
+  <div id="game-area">
+    <div class="cards">
+      <div class="card" id="card-a" onclick="guess('a')">
+        <div class="school-badge" id="school-a"></div>
+        <div class="position-badge" id="pos-a"></div>
+        <div class="player-name" id="name-a"></div>
+        <div class="player-years" id="years-a"></div>
+        <div class="ppg-label">best season PPG</div>
+        <div id="ppg-a" class="ppg-reveal"></div>
+      </div>
+      <div class="card" id="card-b" onclick="guess('b')">
+        <div class="school-badge" id="school-b"></div>
+        <div class="position-badge" id="pos-b"></div>
+        <div class="player-name" id="name-b"></div>
+        <div class="player-years" id="years-b"></div>
+        <div class="ppg-label">best season PPG</div>
+        <div id="ppg-b" class="ppg-hidden">?</div>
+      </div>
+    </div>
+
+    <div class="result-msg empty" id="result-msg"></div>
+    <button class="next-btn" id="next-btn" onclick="nextRound()" disabled>Next matchup →</button>
+  </div>
+
+  <div id="game-over-area" style="display:none">
+    <div class="game-over">
+      <h2>Game over</h2>
+      <p>Final streak: <strong id="final-streak">0</strong> &nbsp;·&nbsp; Best ever: <strong id="final-best">0</strong></p>
+      <button class="restart-btn" onclick="restartGame()">Play again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const players = [
+  { name: "Pete Maravich", school: "LSU", pos: "G", season: "1969–70", ppg: 44.5 },
+  { name: "Oscar Robertson", school: "Cincinnati", pos: "G", season: "1959–60", ppg: 33.7 },
+  { name: "Caitlin Clark", school: "Iowa", pos: "G", season: "2023–24", ppg: 31.6 },
+  { name: "Zion Williamson", school: "Duke", pos: "F", season: "2018–19", ppg: 22.6 },
+  { name: "Steph Curry", school: "Davidson", pos: "G", season: "2008–09", ppg: 28.6 },
+  { name: "Kevin Durant", school: "Texas", pos: "F", season: "2006–07", ppg: 25.8 },
+  { name: "Anthony Davis", school: "Kentucky", pos: "C", season: "2011–12", ppg: 14.2 },
+  { name: "Kareem Abdul-Jabbar", school: "UCLA", pos: "C", season: "1966–67", ppg: 29.0 },
+  { name: "Larry Bird", school: "Indiana State", pos: "F", season: "1978–79", ppg: 28.6 },
+  { name: "Magic Johnson", school: "Michigan State", pos: "G", season: "1978–79", ppg: 17.1 },
+  { name: "Michael Jordan", school: "North Carolina", pos: "G", season: "1983–84", ppg: 19.6 },
+  { name: "Shaquille O'Neal", school: "LSU", pos: "C", season: "1991–92", ppg: 24.1 },
+  { name: "Patrick Ewing", school: "Georgetown", pos: "C", season: "1984–85", ppg: 14.6 },
+  { name: "Hakeem Olajuwon", school: "Houston", pos: "C", season: "1983–84", ppg: 16.8 },
+  { name: "Charles Barkley", school: "Auburn", pos: "F", season: "1983–84", ppg: 14.1 },
+  { name: "Isiah Thomas", school: "Indiana", pos: "G", season: "1980–81", ppg: 16.0 },
+  { name: "Allen Iverson", school: "Georgetown", pos: "G", season: "1995–96", ppg: 25.0 },
+  { name: "Carmelo Anthony", school: "Syracuse", pos: "F", season: "2002–03", ppg: 22.2 },
+  { name: "Dwyane Wade", school: "Marquette", pos: "G", season: "2002–03", ppg: 21.5 },
+  { name: "Chris Paul", school: "Wake Forest", pos: "G", season: "2004–05", ppg: 15.3 },
+  { name: "Russell Westbrook", school: "UCLA", pos: "G", season: "2007–08", ppg: 12.7 },
+  { name: "Blake Griffin", school: "Oklahoma", pos: "F", season: "2008–09", ppg: 23.0 },
+  { name: "John Wall", school: "Kentucky", pos: "G", season: "2009–10", ppg: 16.6 },
+  { name: "Derrick Rose", school: "Memphis", pos: "G", season: "2007–08", ppg: 14.9 },
+  { name: "Kevin Love", school: "UCLA", pos: "F", season: "2007–08", ppg: 17.5 },
+  { name: "Damian Lillard", school: "Weber State", pos: "G", season: "2011–12", ppg: 24.5 },
+  { name: "Jimmy Butler", school: "Marquette", pos: "G/F", season: "2010–11", ppg: 15.4 },
+  { name: "Joel Embiid", school: "Kansas", pos: "C", season: "2013–14", ppg: 11.2 },
+  { name: "Tyrese Haliburton", school: "Iowa State", pos: "G", season: "2020–21", ppg: 16.9 },
+  { name: "Ja Morant", school: "Murray State", pos: "G", season: "2018–19", ppg: 24.5 },
+  { name: "Trae Young", school: "Oklahoma", pos: "G", season: "2018–19", ppg: 27.4 },
+  { name: "Devin Booker", school: "Kentucky", pos: "G", season: "2015–16", ppg: 10.0 },
+  { name: "Donovan Mitchell", school: "Louisville", pos: "G", season: "2016–17", ppg: 15.6 },
+  { name: "Bam Adebayo", school: "Kentucky", pos: "C", season: "2016–17", ppg: 13.0 },
+  { name: "Tyler Herro", school: "Kentucky", pos: "G", season: "2018–19", ppg: 14.0 },
+  { name: "Oscar Tshiebwe", school: "Kentucky", pos: "C", season: "2021–22", ppg: 17.4 },
+  { name: "Frank Kaminsky", school: "Wisconsin", pos: "C", season: "2014–15", ppg: 18.8 },
+  { name: "Doug McDermott", school: "Creighton", pos: "F", season: "2013–14", ppg: 26.7 },
+  { name: "Buddy Hield", school: "Oklahoma", pos: "G", season: "2015–16", ppg: 25.0 },
+  { name: "Jimmer Fredette", school: "BYU", pos: "G", season: "2010–11", ppg: 28.9 },
+  { name: "Andrew Wiggins", school: "Kansas", pos: "F", season: "2013–14", ppg: 17.1 },
+  { name: "Karl-Anthony Towns", school: "Kentucky", pos: "C", season: "2014–15", ppg: 10.3 },
+  { name: "D'Angelo Russell", school: "Ohio State", pos: "G", season: "2014–15", ppg: 19.3 },
+  { name: "Markelle Fultz", school: "Washington", pos: "G", season: "2016–17", ppg: 23.2 },
+  { name: "Ben Simmons", school: "LSU", pos: "F", season: "2015–16", ppg: 19.2 },
+  { name: "Chris Mullin", school: "St. John's", pos: "G", season: "1984–85", ppg: 19.8 },
+];
+
+let streak = 0, best = 0, playerA, playerB, answered = false, usedIndices = [];
+
+function pickTwo() {
+  if (usedIndices.length > players.length - 2) usedIndices = [];
+  let iA, iB;
+  do { iA = Math.floor(Math.random() * players.length); } while (usedIndices.includes(iA));
+  do { iB = Math.floor(Math.random() * players.length); } while (usedIndices.includes(iB) || iB === iA || Math.abs(players[iA].ppg - players[iB].ppg) < 1.5);
+  usedIndices.push(iA, iB);
+  return [players[iA], players[iB]];
+}
+
+function renderRound() {
+  [playerA, playerB] = pickTwo();
+  answered = false;
+  document.getElementById('school-a').textContent = playerA.school;
+  document.getElementById('pos-a').textContent = playerA.pos;
+  document.getElementById('name-a').textContent = playerA.name;
+  document.getElementById('years-a').textContent = 'Best season: ' + playerA.season;
+  document.getElementById('ppg-a').textContent = playerA.ppg.toFixed(1);
+  document.getElementById('ppg-a').className = 'ppg-reveal';
+  document.getElementById('school-b').textContent = playerB.school;
+  document.getElementById('pos-b').textContent = playerB.pos;
+  document.getElementById('name-b').textContent = playerB.name;
+  document.getElementById('years-b').textContent = 'Best season: ' + playerB.season;
+  document.getElementById('ppg-b').textContent = '?';
+  document.getElementById('ppg-b').className = 'ppg-hidden';
+  document.getElementById('card-a').className = 'card';
+  document.getElementById('card-b').className = 'card';
+  document.getElementById('result-msg').textContent = '';
+  document.getElementById('result-msg').className = 'result-msg empty';
+  document.getElementById('next-btn').disabled = true;
+}
+
+function guess(side) {
+  if (answered) return;
+  answered = true;
+  const higher = playerA.ppg >= playerB.ppg ? 'a' : 'b';
+  const correct = side === higher;
+  document.getElementById('ppg-b').textContent = playerB.ppg.toFixed(1);
+  document.getElementById('ppg-b').className = 'ppg-reveal';
+  document.getElementById('card-a').classList.add('disabled');
+  document.getElementById('card-b').classList.add('disabled');
+  if (correct) {
+    document.getElementById('card-' + side).classList.add('correct');
+    streak++;
+    if (streak > best) best = streak;
+    document.getElementById('streak').textContent = streak;
+    document.getElementById('best').textContent = best;
+    const msg = document.getElementById('result-msg');
+    msg.textContent = '✓ Correct! ' + (side === 'a' ? playerA.name : playerB.name) + ' had the higher PPG.';
+    msg.className = 'result-msg correct';
+    document.getElementById('next-btn').disabled = false;
+  } else {
+    document.getElementById('card-' + side).classList.add('wrong');
+    document.getElementById('card-' + (side === 'a' ? 'b' : 'a')).classList.add('correct');
+    streak = 0;
+    document.getElementById('streak').textContent = streak;
+    const msg = document.getElementById('result-msg');
+    msg.textContent = '✗ ' + (higher === 'a' ? playerA.name : playerB.name) + ' had the higher PPG (' + (higher === 'a' ? playerA.ppg.toFixed(1) : playerB.ppg.toFixed(1)) + ').';
+    msg.className = 'result-msg wrong';
+    setTimeout(() => showGameOver(), 1400);
+  }
+}
+
+function nextRound() { renderRound(); }
+
+function showGameOver() {
+  document.getElementById('game-area').style.display = 'none';
+  document.getElementById('game-over-area').style.display = 'block';
+  document.getElementById('final-streak').textContent = best;
+  document.getElementById('final-best').textContent = best;
+}
+
+function restartGame() {
+  streak = 0; best = 0; usedIndices = [];
+  document.getElementById('streak').textContent = 0;
+  document.getElementById('best').textContent = 0;
+  document.getElementById('game-area').style.display = 'block';
+  document.getElementById('game-over-area').style.display = 'none';
+  renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>
