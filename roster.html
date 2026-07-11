@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$15 Roster — AllCBB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Roboto Flex', sans-serif; font-size: 18px; background: #f9f8f6; color: #1a1a1a; min-height: 100vh; }
+
+  /* NAV */
+  nav { border-bottom: 1px solid #e8e6e1; background: #f9f8f6; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: #1a1a1a; text-decoration: none; letter-spacing: -0.2px; }
+  .nav-logo .dot { color: #aaa; font-weight: 400; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: #888; text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover, .nav-links a.active { color: #1a1a1a; }
+
+  /* PAGE */
+  .page { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  /* HEADER */
+  .page-header { margin-bottom: 2rem; }
+  .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 1.2px; color: #aaa; margin-bottom: 8px; }
+  .page-header h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: capitalize; font-size: 32px;  letter-spacing: -0.4px; margin-bottom: 4px; }
+  .page-meta { font-size: 13px; color: #888; line-height: 1.5; }
+
+  /* BUDGET BAR */
+  .budget-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #e8e6e1;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+  }
+  .budget-left { font-size: 13px; color: #888; }
+  .budget-left strong { color: #1a1a1a; font-weight: 600; }
+  .budget-amount {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #1a1a1a;
+    transition: color 0.2s;
+  }
+  .budget-amount.warning { color: #E24B4A; }
+  .budget-amount.perfect { color: #1D9E75; }
+  .budget-label { font-size: 11px; color: #aaa; text-align: right; }
+
+  /* POSITIONS */
+  .positions { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
+
+  .position-block {
+    background: #fff;
+    border: 1px solid #e8e6e1;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .position-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0ede8;
+  }
+  .position-label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; color: #aaa; }
+  .position-selected { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+  .position-selected.empty { color: #ccc; font-weight: 400; }
+
+  .player-options { display: flex; flex-direction: column; }
+  .player-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-bottom: 1px solid #f7f6f4;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .player-option:last-child { border-bottom: none; }
+  .player-option:hover { background: #faf9f7; }
+  .player-option.selected { background: #f0faf6; }
+  .player-option.selected .price-tag { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+
+  .price-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    background: #f5f4f1;
+    border: 1px solid #e8e6e1;
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 34px;
+    text-align: center;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-name { font-size: 14px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-school { font-size: 11px; color: #aaa; margin-top: 1px; }
+  .tier-dots { display: flex; gap: 3px; flex-shrink: 0; }
+  .tier-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8e6e1; }
+  .tier-dot.filled { background: #1a1a1a; }
+
+  /* SUBMIT */
+  .submit-btn {
+    display: block; width: 100%;
+    padding: 14px;
+    background: #1a1a1a; color: #fff;
+    border: none; border-radius: 10px;
+    font-family: 'Roboto Flex', sans-serif;
+    font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+    margin-bottom: 1rem;
+  }
+  .submit-btn:hover { background: #333; }
+  .submit-btn:disabled { background: #e8e6e1; color: #aaa; pointer-events: none; }
+
+  .budget-hint { text-align: center; font-size: 13px; color: #aaa; min-height: 20px; }
+
+  /* RESULTS */
+  #results-screen { display: none; }
+  .results-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e8e6e1; }
+  .results-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .results-header p { font-size: 14px; color: #888; }
+
+  .roster-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  .roster-table thead th { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; color: #aaa; padding: 0 12px 10px; text-align: left; border-bottom: 2px solid #e8e6e1; }
+  .roster-table tbody tr:nth-child(odd) { background: #fff; }
+  .roster-table tbody tr:nth-child(even) { background: #f7f6f4; }
+  .roster-table tbody td { padding: 11px 12px; font-size: 14px; vertical-align: middle; }
+  .result-pos { font-size: 11px; font-weight: 600; color: #aaa; letter-spacing: 0.6px; }
+  .result-name { font-weight: 600; color: #1a1a1a; }
+  .result-school { font-size: 11px; color: #aaa; margin-top: 1px; }
+  .result-price { font-size: 13px; font-weight: 700; color: #1D9E75; text-align: right; }
+  .result-total { font-size: 15px; font-weight: 600; color: #1a1a1a; text-align: right; padding-top: 12px !important; border-top: 2px solid #e8e6e1; }
+
+  .play-again-btn {
+    display: block; width: 100%;
+    padding: 13px;
+    background: #fff; color: #1a1a1a;
+    border: 1px solid #e8e6e1; border-radius: 10px;
+    font-family: 'Roboto Flex', sans-serif;
+    font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .play-again-btn:hover { background: #f5f4f1; }
+
+  .daily-note { text-align: center; font-size: 12px; color: #bbb; margin-top: 1rem; }
+
+  @media (max-width: 520px) {
+    .page { padding: 1.5rem 1rem 3rem; }
+    .player-name { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">AllCBB<span class="dot">.com</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pointbattle.html">Games</a></li>
+      <li><a href="roster.html" class="active">$15 Roster</a></li>
+      <li><a href="top25.html">Lists</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen">
+    <div class="page-header">
+      <div class="page-eyebrow" id="daily-label">Daily · Loading...</div>
+      <h1>$15 Roster</h1>
+      <p class="page-meta">Build a 5-player roster. You have $15. Pick one player per position. Spend it all — exactly.</p>
+    </div>
+
+    <div class="budget-bar">
+      <div>
+        <div class="budget-left">Budget remaining</div>
+        <div class="budget-label" id="spent-label">$0 spent</div>
+      </div>
+      <div class="budget-amount" id="budget-display">$15</div>
+    </div>
+
+    <div class="positions" id="positions-container"></div>
+
+    <button class="submit-btn" id="submit-btn" disabled onclick="submitRoster()">Submit roster</button>
+    <div class="budget-hint" id="budget-hint">Pick one player per position</div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="results-screen">
+    <div class="results-header">
+      <h2>Your roster</h2>
+      <p id="results-date"></p>
+    </div>
+    <table class="roster-table">
+      <thead>
+        <tr>
+          <th>Pos</th>
+          <th>Player</th>
+          <th style="text-align:right">Cost</th>
+        </tr>
+      </thead>
+      <tbody id="results-body"></tbody>
+    </table>
+    <button class="play-again-btn" onclick="resetGame()">Build another roster</button>
+    <div class="daily-note" id="daily-note"></div>
+  </div>
+
+</div>
+
+<script>
+// ── PLAYER POOL ────────────────────────────────────────────────────────────
+// Each player has: name, school, era, tier (1–5)
+// Tier 5 = legend, Tier 1 = solid but lesser known
+// Add more players here anytime to increase daily variety
+
+const pool = {
+  PG: [
+    { name: "Pete Maravich",    school: "LSU",           era: "1967–70", tier: 5 },
+    { name: "Oscar Robertson",  school: "Cincinnati",    era: "1957–60", tier: 5 },
+    { name: "Steph Curry",      school: "Davidson",      era: "2006–09", tier: 5 },
+    { name: "Allen Iverson",    school: "Georgetown",    era: "1994–96", tier: 5 },
+    { name: "Isiah Thomas",     school: "Indiana",       era: "1979–81", tier: 4 },
+    { name: "Trae Young",       school: "Oklahoma",      era: "2017–18", tier: 4 },
+    { name: "Ja Morant",        school: "Murray State",  era: "2017–19", tier: 4 },
+    { name: "John Wall",        school: "Kentucky",      era: "2009–10", tier: 4 },
+    { name: "Gary Payton",      school: "Oregon State",  era: "1986–90", tier: 3 },
+    { name: "Derrick Rose",     school: "Memphis",       era: "2007–08", tier: 3 },
+    { name: "Chris Paul",       school: "Wake Forest",   era: "2003–05", tier: 3 },
+    { name: "Deron Williams",   school: "Illinois",      era: "2002–05", tier: 3 },
+    { name: "Jimmer Fredette",  school: "BYU",           era: "2007–11", tier: 2 },
+    { name: "Tyrese Haliburton",school: "Iowa State",    era: "2018–21", tier: 2 },
+    { name: "D'Angelo Russell", school: "Ohio State",    era: "2014–15", tier: 2 },
+    { name: "Steve Nash",       school: "Santa Clara",   era: "1992–96", tier: 2 },
+    { name: "Markelle Fultz",   school: "Washington",    era: "2016–17", tier: 1 },
+    { name: "Darius Garland",   school: "Vanderbilt",    era: "2018–19", tier: 1 },
+    { name: "Cade Cunningham",  school: "Oklahoma State",era: "2020–21", tier: 1 },
+    { name: "Anthony Black",    school: "Arkansas",      era: "2022–23", tier: 1 },
+  ],
+  SG: [
+    { name: "Michael Jordan",   school: "North Carolina",era: "1981–84", tier: 5 },
+    { name: "Jerry West",       school: "West Virginia", era: "1956–60", tier: 5 },
+    { name: "Caitlin Clark",    school: "Iowa",          era: "2020–24", tier: 5 },
+    { name: "Reggie Miller",    school: "UCLA",          era: "1983–87", tier: 4 },
+    { name: "Ray Allen",        school: "Connecticut",   era: "1993–96", tier: 4 },
+    { name: "Buddy Hield",      school: "Oklahoma",      era: "2012–16", tier: 4 },
+    { name: "Donovan Mitchell", school: "Louisville",    era: "2015–17", tier: 3 },
+    { name: "Devin Booker",     school: "Kentucky",      era: "2015–16", tier: 3 },
+    { name: "Doug McDermott",   school: "Creighton",     era: "2010–14", tier: 3 },
+    { name: "Tyler Herro",      school: "Kentucky",      era: "2018–19", tier: 2 },
+    { name: "Mitch Richmond",   school: "Kansas State",  era: "1984–88", tier: 2 },
+    { name: "Glen Rice",        school: "Michigan",      era: "1985–89", tier: 2 },
+    { name: "Bennedict Mathurin",school:"Arizona",       era: "2020–22", tier: 1 },
+    { name: "Johnny Davis",     school: "Wisconsin",     era: "2020–22", tier: 1 },
+    { name: "Jaden Ivey",       school: "Purdue",        era: "2020–22", tier: 1 },
+    { name: "Nick Smith Jr.",   school: "Arkansas",      era: "2022–23", tier: 1 },
+  ],
+  SF: [
+    { name: "LeBron James",     school: "St. Vincent HS",era: "N/A",    tier: 5 },
+    { name: "Kevin Durant",     school: "Texas",         era: "2006–07", tier: 5 },
+    { name: "Larry Bird",       school: "Indiana State", era: "1975–79", tier: 5 },
+    { name: "Carmelo Anthony",  school: "Syracuse",      era: "2002–03", tier: 5 },
+    { name: "Grant Hill",       school: "Duke",          era: "1990–94", tier: 4 },
+    { name: "Zion Williamson",  school: "Duke",          era: "2018–19", tier: 4 },
+    { name: "Scottie Pippen",   school: "Central Arkansas",era:"1983–87",tier: 4 },
+    { name: "Vince Carter",     school: "North Carolina",era: "1995–98", tier: 3 },
+    { name: "Blake Griffin",    school: "Oklahoma",      era: "2007–09", tier: 3 },
+    { name: "Andrew Wiggins",   school: "Kansas",        era: "2013–14", tier: 3 },
+    { name: "Dwyane Wade",      school: "Marquette",     era: "2000–03", tier: 3 },
+    { name: "Paolo Banchero",   school: "Duke",          era: "2021–22", tier: 2 },
+    { name: "Brandon Miller",   school: "Alabama",       era: "2022–23", tier: 2 },
+    { name: "Keegan Murray",    school: "Iowa",          era: "2020–22", tier: 2 },
+    { name: "Cam Whitmore",     school: "Villanova",     era: "2022–23", tier: 1 },
+    { name: "Jarace Walker",    school: "Houston",       era: "2022–23", tier: 1 },
+  ],
+  PF: [
+    { name: "Tim Duncan",       school: "Wake Forest",   era: "1993–97", tier: 5 },
+    { name: "Charles Barkley",  school: "Auburn",        era: "1981–84", tier: 5 },
+    { name: "Karl Malone",      school: "Louisiana Tech",era: "1982–85", tier: 5 },
+    { name: "Elvin Hayes",      school: "Houston",       era: "1965–68", tier: 5 },
+    { name: "Chris Webber",     school: "Michigan",      era: "1991–93", tier: 4 },
+    { name: "Kevin Love",       school: "UCLA",          era: "2007–08", tier: 4 },
+    { name: "David Thompson",   school: "NC State",      era: "1972–75", tier: 4 },
+    { name: "Jabari Smith Jr.", school: "Auburn",        era: "2021–22", tier: 3 },
+    { name: "Obi Toppin",       school: "Dayton",        era: "2018–20", tier: 3 },
+    { name: "Draymond Green",   school: "Michigan State",era: "2008–12", tier: 3 },
+    { name: "Dennis Rodman",    school: "SE Oklahoma St",era: "1983–86", tier: 2 },
+    { name: "Evan Mobley",      school: "USC",           era: "2020–21", tier: 2 },
+    { name: "Jimmy Butler",     school: "Marquette",     era: "2007–11", tier: 2 },
+    { name: "Markelle Fultz",   school: "Washington",    era: "2016–17", tier: 1 },
+    { name: "Jalen Williams",   school: "Santa Clara",   era: "2018–21", tier: 1 },
+    { name: "Tari Eason",       school: "LSU",           era: "2021–22", tier: 1 },
+  ],
+  C: [
+    { name: "Kareem Abdul-Jabbar",school:"UCLA",         era: "1966–69", tier: 5 },
+    { name: "Shaquille O'Neal",  school: "LSU",          era: "1989–92", tier: 5 },
+    { name: "Bill Walton",       school: "UCLA",         era: "1971–74", tier: 5 },
+    { name: "Patrick Ewing",     school: "Georgetown",   era: "1981–85", tier: 5 },
+    { name: "Hakeem Olajuwon",   school: "Houston",      era: "1981–84", tier: 4 },
+    { name: "Anthony Davis",     school: "Kentucky",     era: "2011–12", tier: 4 },
+    { name: "Bob Lanier",        school: "St. Bonaventure",era:"1967–70",tier: 4 },
+    { name: "Alonzo Mourning",   school: "Georgetown",   era: "1988–92", tier: 3 },
+    { name: "Oscar Tshiebwe",    school: "Kentucky",     era: "2020–23", tier: 3 },
+    { name: "Frank Kaminsky",    school: "Wisconsin",    era: "2011–15", tier: 3 },
+    { name: "Luka Garza",        school: "Iowa",         era: "2017–21", tier: 2 },
+    { name: "Joel Embiid",       school: "Kansas",       era: "2013–14", tier: 2 },
+    { name: "Karl-Anthony Towns",school: "Kentucky",     era: "2014–15", tier: 2 },
+    { name: "Dikembe Mutombo",   school: "Georgetown",   era: "1987–91", tier: 2 },
+    { name: "Mark Williams",     school: "Duke",         era: "2020–22", tier: 1 },
+    { name: "Zach Edey",         school: "Purdue",       era: "2020–24", tier: 1 },
+  ],
+};
+
+// ── DAILY SEED ────────────────────────────────────────────────────────────
+function dateString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+function seededRandom(seed) {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = (h * 16777619) >>> 0;
+  }
+  return function() {
+    h ^= h << 13; h ^= h >> 17; h ^= h << 5;
+    return (h >>> 0) / 4294967296;
+  };
+}
+
+function pickDailyPlayers() {
+  const seed = dateString();
+  const rng = seededRandom(seed);
+  const positions = ['PG', 'SG', 'SF', 'PF', 'C'];
+  const result = {};
+
+  positions.forEach(pos => {
+    const byTier = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+    pool[pos].forEach(p => byTier[p.tier].push(p));
+
+    // Pick one player per tier, shuffled by seed
+    const picked = [];
+    for (let t = 1; t <= 5; t++) {
+      const options = byTier[t];
+      if (options.length === 0) continue;
+      const idx = Math.floor(rng() * options.length);
+      picked.push({ ...options[idx], price: t });
+    }
+    // Sort $1 to $5
+    result[pos] = picked.sort((a, b) => a.price - b.price);
+  });
+  return result;
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+const BUDGET = 15;
+const positions = ['PG', 'SG', 'SF', 'PF', 'C'];
+let dailyPlayers = {};
+let selections = { PG: null, SG: null, SF: null, PF: null, C: null };
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+function init() {
+  dailyPlayers = pickDailyPlayers();
+
+  // Set date label
+  const d = new Date();
+  const label = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  document.getElementById('daily-label').textContent = `Daily · ${label}`;
+  document.getElementById('results-date').textContent = label;
+  document.getElementById('daily-note').textContent = `New roster available tomorrow.`;
+
+  buildUI();
+  updateBudget();
+}
+
+function buildUI() {
+  const container = document.getElementById('positions-container');
+  container.innerHTML = '';
+
+  positions.forEach(pos => {
+    const players = dailyPlayers[pos];
+    const block = document.createElement('div');
+    block.className = 'position-block';
+    block.id = `block-${pos}`;
+
+    block.innerHTML = `
+      <div class="position-header">
+        <span class="position-label">${pos}</span>
+        <span class="position-selected empty" id="selected-label-${pos}">No player selected</span>
+      </div>
+      <div class="player-options" id="options-${pos}"></div>
+    `;
+
+    const optionsDiv = block.querySelector(`#options-${pos}`);
+    players.forEach(player => {
+      const row = document.createElement('div');
+      row.className = 'player-option';
+      row.id = `option-${pos}-${player.price}`;
+      row.onclick = () => selectPlayer(pos, player);
+
+      const dots = [1,2,3,4,5].map(i =>
+        `<div class="tier-dot ${i <= player.price ? 'filled' : ''}"></div>`
+      ).join('');
+
+      row.innerHTML = `
+        <span class="price-tag">$${player.price}</span>
+        <div class="player-info">
+          <div class="player-name">${player.name}</div>
+          <div class="player-school">${player.school} · ${player.era}</div>
+        </div>
+        <div class="tier-dots">${dots}</div>
+      `;
+      optionsDiv.appendChild(row);
+    });
+
+    container.appendChild(block);
+  });
+}
+
+function selectPlayer(pos, player) {
+  selections[pos] = player;
+
+  // Update selected options UI
+  const optionsDiv = document.getElementById(`options-${pos}`);
+  optionsDiv.querySelectorAll('.player-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById(`option-${pos}-${player.price}`).classList.add('selected');
+
+  // Update header label
+  const label = document.getElementById(`selected-label-${pos}`);
+  label.textContent = `${player.name} — $${player.price}`;
+  label.classList.remove('empty');
+
+  updateBudget();
+}
+
+function updateBudget() {
+  const spent = positions.reduce((sum, pos) => sum + (selections[pos]?.price || 0), 0);
+  const remaining = BUDGET - spent;
+  const allPicked = positions.every(pos => selections[pos] !== null);
+
+  const display = document.getElementById('budget-display');
+  const hint = document.getElementById('budget-hint');
+  const btn = document.getElementById('submit-btn');
+  const spentLabel = document.getElementById('spent-label');
+
+  display.textContent = `$${remaining}`;
+  spentLabel.textContent = `$${spent} spent`;
+
+  display.classList.remove('warning', 'perfect');
+  if (remaining === 0 && allPicked) {
+    display.classList.add('perfect');
+    btn.disabled = false;
+    hint.textContent = "Perfect. Submit your roster.";
+  } else if (remaining < 0) {
+    display.classList.add('warning');
+    btn.disabled = true;
+    hint.textContent = "Over budget — swap a player out.";
+  } else if (!allPicked) {
+    btn.disabled = true;
+    const unpicked = positions.filter(p => !selections[p]).length;
+    hint.textContent = `${unpicked} position${unpicked > 1 ? 's' : ''} remaining`;
+  } else {
+    // All picked but not $15
+    btn.disabled = true;
+    hint.textContent = remaining > 0
+      ? `$${remaining} left — you need to spend it all.`
+      : "Over budget — swap a player out.";
+  }
+}
+
+function submitRoster() {
+  const tbody = document.getElementById('results-body');
+  tbody.innerHTML = '';
+  let total = 0;
+
+  positions.forEach(pos => {
+    const p = selections[pos];
+    total += p.price;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="result-pos">${pos}</span></td>
+      <td>
+        <div class="result-name">${p.name}</div>
+        <div class="result-school">${p.school} · ${p.era}</div>
+      </td>
+      <td class="result-price">$${p.price}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const totalRow = document.createElement('tr');
+  totalRow.innerHTML = `
+    <td colspan="2" class="result-total" style="font-size:13px;color:#aaa;">Total</td>
+    <td class="result-price result-total">$${total}</td>
+  `;
+  tbody.appendChild(totalRow);
+
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+}
+
+function resetGame() {
+  selections = { PG: null, SG: null, SF: null, PF: null, C: null };
+  document.getElementById('game-screen').style.display = 'block';
+  document.getElementById('results-screen').style.display = 'none';
+  buildUI();
+  updateBudget();
+}
+
+init();
+</script>
+</body>
+</html>
